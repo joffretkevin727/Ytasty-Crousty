@@ -1,1 +1,0 @@
-#RESSOURCE_INTROUVABLE = "Ressource introuvable"
