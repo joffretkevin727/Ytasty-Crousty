@@ -7,9 +7,9 @@ from app.modules.auth.repository import LoginRequest, LoginResponse
 auth_router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
-@auth_router.post("/post", response_model=LoginRequest, status_code=201)
-def auth(req: LoginResponse):
-    result = service.auth(req.username, req.password)
+@auth_router.post("/post", response_model=LoginResponse, status_code=201)
+def auth(req: LoginRequest):
+    result = service.auth(req)
     if result is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
