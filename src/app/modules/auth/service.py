@@ -1,7 +1,7 @@
 from jose import jwt
 from passlib.context import CryptContext
 
-from app.modules.auth.schemas import LoginResponse
+from app.modules.auth.repository import LoginResponse
 
 SECRET_KEY = "7gu6u3_s)!(mor*zdv4-d2w_z855(=owtxdw8nu)jfylf4_$+#"
 ALGORITHM = "HS256"
