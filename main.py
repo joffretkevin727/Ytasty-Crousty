@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-app = FastAPI(title="Toasty-Crousty")
+app = FastAPI(title="Ytasty-Crousty")
 
 print("test")
 
