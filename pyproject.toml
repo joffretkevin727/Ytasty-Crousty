@@ -1,5 +1,5 @@
 [project]
-name = "ytasty-crousty"
+name = "app"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -10,13 +10,16 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.141.1",
     "jwt>=1.4.0",
+    "passlib",
+    "pwdlib[argon2]>=0.3.1",
     "pydantic>=2.13.5",
+    "python-jose>=3.5.0",
     "sqlalchemy>=2.0.52",
     "uvicorn>=0.52.4",
 ]
 
 [project.scripts]
-ytasty-crousty = "ytasty_crousty:main"
+app = "app:main"
 
 [build-system]
 requires = ["uv_build>=0.12.10,<0.13.0"]
