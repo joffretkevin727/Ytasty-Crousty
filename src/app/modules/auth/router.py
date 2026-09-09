@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from pydantic import BaseModel
 
 from app.modules.auth import service
-from app.modules.auth.repository import LoginRequest, LoginResponse
+from app.modules.auth.schemas import LoginRequest, LoginResponse
 
 auth_router = APIRouter(prefix="/auth", tags=["Auth"])
 
