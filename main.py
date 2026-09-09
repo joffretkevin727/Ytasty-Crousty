@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 
+from src.app.modules.auth.router import auth_router
+
 app = FastAPI(title="Toasty-Crousty")
 
-print("test")
+app.include_router(auth_router)  
 
 @app.get("/health")
 def root():
