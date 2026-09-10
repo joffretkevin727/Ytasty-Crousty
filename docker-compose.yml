@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: ytasty_postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-ytasty_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-ytasty_pass}
+      POSTGRES_DB: ${DB_NAME:-ytasty_db}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-ytasty_user} -d ${DB_NAME:-ytasty_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ytasty_api
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_USER: ${DB_USER:-ytasty_user}
+      DB_PASSWORD: ${DB_PASSWORD:-ytasty_pass}
+      DB_NAME: ${DB_NAME:-ytasty_db}
+      DATABASE_URL: postgresql://${DB_USER:-ytasty_user}:${DB_PASSWORD:-ytasty_pass}@db:5432/${DB_NAME:-ytasty_db}
+      PORT: "8080"
+      JWT_SECRET: ${JWT_SECRET:-supersecretkey123456789}
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
