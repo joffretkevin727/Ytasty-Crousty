@@ -1,9 +1,11 @@
-from pydantic import BaseModel
+from sqlalchemy.orm import Session
 
-class LoginRequest(BaseModel):
-    username: str
-    password: str
+from app.models.user import User
 
-class LoginResponse(BaseModel):
-    access_token: str
-    token_type: str
+
+def get_user_by_username(db: Session, username: str):
+    return (
+        db.query(User)
+        .filter(User.username == username)
+        .first()
+    )

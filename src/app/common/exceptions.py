@@ -1,4 +1,4 @@
-from common import constants
+from . import constants
 
 class Error(Exception):
     """Classe de base pour les exceptions personnalisées"""
