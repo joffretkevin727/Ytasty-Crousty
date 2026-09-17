@@ -68,6 +68,6 @@ INSERT INTO restaurants (id, name, city, address, is_open, opening_hours, contac
 SELECT setval('restaurants_id_seq', (SELECT MAX(id) FROM restaurants));
 
 INSERT INTO users (id, first_name, last_name, username, password_hash, role, restaurant_id) VALUES
-(1, 'Admin', 'Ytasty', 'admin123', '$2b$12$eX8Vb3X8qj7jE9mG5I3T6u6FpXwZ2qL1w7Y4K5p6zB1zJ8Q8F7P2.', 'admin', NULL);
+(1, 'Admin', 'Ytasty', 'admin123', '$2b$12$3xGSCqzSEGIoayvj3a/LTemxuDbADnQ1JDJYqHvxUr/aOpsddWqAa', 'admin', NULL);
 
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
