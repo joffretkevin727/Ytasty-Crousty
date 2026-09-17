@@ -2,12 +2,12 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from pydantic import BaseModel
 
 from app.modules.auth import service
-from app.modules.auth.repository import LoginRequest, LoginResponse
+from app.modules.auth.schemas import LoginRequest, LoginResponse
 
 auth_router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
-@auth_router.post("/post", response_model=LoginResponse, status_code=201)
+@auth_router.post("/login", response_model=LoginResponse, status_code=201)
 def auth(req: LoginRequest):
     result = service.auth(req)
     if result is None:
