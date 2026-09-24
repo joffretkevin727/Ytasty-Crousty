@@ -3,7 +3,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.common.dependencies import get_current_user, get_db
 from app.models.user import User
 from app.modules.product import service
-from app.modules.product.schemas import Product, ProductCreate, ProductUpdate
+from app.modules.product.schemas import (
+    Product,
+    ProductCreate,
+    ProductStatusUpdate,
+    ProductUpdate,
+)
 
 product_router = APIRouter(tags=["Product"])
 
@@ -95,6 +100,28 @@ def update_product(
         db,
         product,
         product_data.model_dump(exclude_unset=True),
+    )
+
+
+@product_router.put("/products/{product_id}/availability", response_model=Product)
+def update_product_status(
+    product_id: int,
+    status_data: ProductStatusUpdate,
+    db=Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    product = service.get_product_by_id(db, product_id)
+    if product is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found",
+        )
+
+    _check_product_access(product, current_user)
+    return service.update_product_status(
+        db,
+        product,
+        status_data.is_available,
     )
 
 

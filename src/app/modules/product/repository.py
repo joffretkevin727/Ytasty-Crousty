@@ -33,6 +33,13 @@ def update_product(db: Session, product: Product, product_data: dict):
     return product
 
 
+def update_product_status(db: Session, product: Product, is_available: bool):
+    product.is_available = is_available
+    db.commit()
+    db.refresh(product)
+    return product
+
+
 def delete_product(db: Session, product: Product):
     db.delete(product)
     db.commit()

@@ -19,6 +19,10 @@ def update_product(db: Session, product, product_data: dict):
     return repository.update_product(db, product, product_data)
 
 
+def update_product_status(db: Session, product, is_available: bool):
+    return repository.update_product_status(db, product, is_available)
+
+
 def delete_product(db: Session, product):
     return repository.delete_product(db, product)
 

@@ -35,3 +35,7 @@ class ProductUpdate(BaseModel):
     price: float | None = None
     is_available: bool | None = None
     ingredients: list[str] | None = None
+
+
+class ProductStatusUpdate(BaseModel):
+    is_available: bool
