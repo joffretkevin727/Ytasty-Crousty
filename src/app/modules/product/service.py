@@ -1,20 +1,10 @@
-from app.modules.product import repository
 from sqlalchemy.orm import Session
 
+from app.modules.product import repository
 
 
+def get_product_by_id(db: Session, product_id: int):
+    return repository.get_product_by_id(db, product_id)
 
-def get_all_products(
-    db: Session,
-    category: str | None = None,
-    restaurant_id: int | None = None,
-    is_available: bool | None = None,
-    name_query: str | None = None,
-):
-    return repository.get_all_products(
-        db,
-        category=category,
-        restaurant_id=restaurant_id,
-        is_available=is_available,
-        name_query=name_query,
-    )
+def get_all_products( db: Session, category: str | None = None, restaurant_id: int | None = None, is_available: bool | None = None, name_query: str | None = None):
+    return repository.get_all_products( db, category=category, restaurant_id=restaurant_id, is_available=is_available, name_query=name_query)
