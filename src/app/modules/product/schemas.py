@@ -25,3 +25,13 @@ class ProductCreate(BaseModel):
     price: float
     is_available: bool = True
     ingredients: list[str] = []
+
+
+class ProductUpdate(BaseModel):
+    name: str | None = None
+    image: str | None = None
+    description: str | None = None
+    category: str | None = None
+    price: float | None = None
+    is_available: bool | None = None
+    ingredients: list[str] | None = None

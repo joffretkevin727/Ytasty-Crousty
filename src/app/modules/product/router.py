@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.common.dependencies import get_current_user, get_db
 from app.models.user import User
 from app.modules.product import service
-from app.modules.product.schemas import Product, ProductCreate
+from app.modules.product.schemas import Product, ProductCreate, ProductUpdate
 
 product_router = APIRouter(tags=["Product"])
 
@@ -63,3 +63,53 @@ def create_products(
         product_data.model_dump(),
         restaurant_ids,
     )
+
+
+def _check_product_access(product, current_user: User):
+    if current_user.role == "admin":
+        return
+    if current_user.role == "staff" and current_user.restaurant_id == product.restaurant_id:
+        return
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="You are not authorized to manage this product",
+    )
+
+
+@product_router.put("/products/{product_id}", response_model=Product)
+def update_product(
+    product_id: int,
+    product_data: ProductUpdate,
+    db=Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    product = service.get_product_by_id(db, product_id)
+    if product is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found",
+        )
+
+    _check_product_access(product, current_user)
+    return service.update_product(
+        db,
+        product,
+        product_data.model_dump(exclude_unset=True),
+    )
+
+
+@product_router.delete("/products/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_product(
+    product_id: int,
+    db=Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    product = service.get_product_by_id(db, product_id)
+    if product is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found",
+        )
+
+    _check_product_access(product, current_user)
+    service.delete_product(db, product)

@@ -24,6 +24,20 @@ def create_products(db: Session, product_data: dict, restaurant_ids: list[int]):
         db.refresh(product)
     return products
 
+
+def update_product(db: Session, product: Product, product_data: dict):
+    for field, value in product_data.items():
+        setattr(product, field, value)
+    db.commit()
+    db.refresh(product)
+    return product
+
+
+def delete_product(db: Session, product: Product):
+    db.delete(product)
+    db.commit()
+    return 
+
 def get_all_products(
     db: Session,
     category: str | None = None,
