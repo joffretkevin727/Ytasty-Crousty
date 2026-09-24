@@ -71,3 +71,36 @@ INSERT INTO users (id, first_name, last_name, username, password_hash, role, res
 (1, 'Admin', 'Ytasty', 'admin123', '$2b$12$3xGSCqzSEGIoayvj3a/LTemxuDbADnQ1JDJYqHvxUr/aOpsddWqAa', 'admin', NULL);
 
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
+
+INSERT INTO products
+    (id, name, image, description, category, price, is_available, restaurant_id, ingredients)
+VALUES
+    (1, 'Crousty Original', '/images/products/crousty-original.jpg',
+     'Poulet croustillant, riz parfume et sauce maison.', 'chicken', 11.90, TRUE, 1,
+     '["poulet", "riz", "sauce maison"]'::jsonb),
+    (2, 'Crousty Epice', '/images/products/crousty-epice.jpg',
+     'Poulet croustillant, riz et sauce epicee.', 'chicken', 12.50, TRUE, 1,
+     '["poulet", "riz", "sauce epicee"]'::jsonb),
+    (3, 'Tenders Box', '/images/products/tenders-box.jpg',
+     'Tenders de poulet croustillants avec frites et sauce au choix.', 'chicken', 10.90, TRUE, 2,
+     '["poulet", "frites", "sauce"]'::jsonb),
+    (4, 'Crousty Lyonnais', '/images/products/crousty-lyonnais.jpg',
+     'Poulet croustillant, riz, fromage et sauce maison.', 'chicken', 13.90, TRUE, 2,
+     '["poulet", "riz", "fromage", "sauce maison"]'::jsonb),
+    (5, 'Wrap Veggie', '/images/products/wrap-veggie.jpg',
+     'Wrap aux legumes croquants et sauce yaourt.', 'vegetarian', 9.90, TRUE, 3,
+     '["galette", "salade", "tomate", "sauce yaourt"]'::jsonb),
+    (6, 'Frites Cheddar', '/images/products/frites-cheddar.jpg',
+     'Frites croustillantes recouvertes de cheddar fondu.', 'side', 4.90, TRUE, 3,
+     '["pommes de terre", "cheddar"]'::jsonb),
+    (7, 'Crousty Family', '/images/products/crousty-family.jpg',
+     'Format a partager avec poulet croustillant, riz et sauces.', 'menu', 28.90, FALSE, 1,
+     '["poulet", "riz", "sauces"]'::jsonb),
+    (8, 'Cookie Chocolat', '/images/products/cookie-chocolat.jpg',
+     'Cookie moelleux aux pepites de chocolat.', 'dessert', 3.50, TRUE, 2,
+     '["farine", "chocolat", "beurre"]'::jsonb),
+    (9, 'The Glace Peche', '/images/products/the-glace-peche.jpg',
+     'Boisson fraiche au the et a la peche.', 'drink', 2.90, TRUE, 3,
+     '["the", "peche", "eau"]'::jsonb);
+
+SELECT setval('products_id_seq', (SELECT MAX(id) FROM products));

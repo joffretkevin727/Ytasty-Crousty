@@ -6,6 +6,7 @@ from app.models.restaurant import Restaurant
 class Product(Base):
     __tablename__ = "products"
 
+
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     image: Mapped[str] = mapped_column(String, nullable=False)
