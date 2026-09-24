@@ -14,5 +14,4 @@ app.include_router(auth_router)
 app.include_router(users_router)  
 app.include_router(restaurant_router)
 app.include_router(product_router)
-app.include_router(order_router)
-
+app.include_router(order_router) 
