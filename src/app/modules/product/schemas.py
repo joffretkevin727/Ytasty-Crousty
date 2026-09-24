@@ -2,6 +2,7 @@
 
 from pydantic import BaseModel
 
+
 class Product(BaseModel):
     id : int
     name : str
@@ -14,3 +15,13 @@ class Product(BaseModel):
     ingredients : list[str]
 
     model_config = {"from_attributes": True}
+
+
+class ProductCreate(BaseModel):
+    name: str
+    image: str
+    description: str
+    category: str
+    price: float
+    is_available: bool = True
+    ingredients: list[str] = []

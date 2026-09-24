@@ -2,10 +2,27 @@ from sqlalchemy import String, cast, or_
 from sqlalchemy.orm import Session
 
 from app.models.product import Product
+from app.models.restaurant import Restaurant
 
 
 def get_product_by_id(db: Session, product_id: int):
     return db.query(Product).filter(Product.id == product_id).first()
+
+
+def get_restaurant_ids(db: Session):
+    return [restaurant_id for (restaurant_id,) in db.query(Restaurant.id).all()]
+
+
+def create_products(db: Session, product_data: dict, restaurant_ids: list[int]):
+    products = [
+        Product(**product_data, restaurant_id=restaurant_id)
+        for restaurant_id in restaurant_ids
+    ]
+    db.add_all(products)
+    db.commit()
+    for product in products:
+        db.refresh(product)
+    return products
 
 def get_all_products(
     db: Session,

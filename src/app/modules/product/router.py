@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.common.dependencies import get_db
+from app.common.dependencies import get_current_user, get_db
+from app.models.user import User
 from app.modules.product import service
-from app.modules.product.schemas import Product
+from app.modules.product.schemas import Product, ProductCreate
 
 product_router = APIRouter(tags=["Product"])
 
@@ -29,3 +30,36 @@ def get_product_by_id(product_id: int, db=Depends(get_db)):
             detail="Product not found",
         )
     return result
+
+
+@product_router.post(
+    "/products",
+    response_model=list[Product],
+    status_code=status.HTTP_201_CREATED,
+)
+def create_products(
+    product_data: ProductCreate,
+    db=Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    if current_user.role == "admin":
+        restaurant_ids = service.get_restaurant_ids(db)
+    elif current_user.role == "staff" and current_user.restaurant_id is not None:
+        restaurant_ids = [current_user.restaurant_id]
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only admins and staff assigned to a restaurant can create products",
+        )
+
+    if not restaurant_ids:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No restaurant found",
+        )
+
+    return service.create_products(
+        db,
+        product_data.model_dump(),
+        restaurant_ids,
+    )
