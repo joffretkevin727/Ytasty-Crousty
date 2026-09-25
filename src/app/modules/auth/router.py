@@ -10,7 +10,7 @@ from app.modules.auth.schemas import LoginRequest, LoginResponse
 auth_router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
-@auth_router.post("/login", response_model=LoginResponse, status_code=201)
+@auth_router.post("/login", response_model=LoginResponse, status_code=status.HTTP_200_OK)
 def auth(req: LoginRequest, db: Session = Depends(get_db)):
     result = service.auth(req, db)
     if result is None:
