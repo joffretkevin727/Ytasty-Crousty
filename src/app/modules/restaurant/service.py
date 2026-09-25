@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from app.modules.restaurant.schemas import RestaurantUpdate
 
 
-""" route Public"""
 
 def get_all_restaurants(db: Session):
     return repository.get_all_restaurants(db)
@@ -11,7 +10,6 @@ def get_all_restaurants(db: Session):
 def get_restaurants_by_id(db: Session, restaurant_id: int):
     return repository.get_restaurants_by_id(db, restaurant_id)
 
-""" route réservée aux admins"""
 
 def modify_restaurant(db: Session, restaurant_id: int, restaurant_data: RestaurantUpdate):
     update_dict = restaurant_data.model_dump(exclude_unset=True)

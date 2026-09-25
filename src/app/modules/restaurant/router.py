@@ -27,9 +27,8 @@ def get_restaurant_by_id(restaurant_id: int, db=Depends(get_db)):
         )
     return result
 
-""" route réservée aux admins"""
 
-@restaurant_router.put("/restaurants/{restaurant_id}", response_model=Restaurant)
+@restaurant_router.patch("/restaurants/{restaurant_id}", response_model=Restaurant)
 def modify_restaurant(
     restaurant_id: int,
     restaurant_data: RestaurantUpdate,
@@ -48,7 +47,7 @@ def modify_restaurant(
 
     return result
 
-@restaurant_router.put("/restaurants/{restaurant_id}/availability", response_model=RestaurantStatusUpdate)
+@restaurant_router.patch("/restaurants/{restaurant_id}/availability", response_model=RestaurantStatusUpdate)
 def modify_restaurant_status(
     restaurant_id: int,
     status_data: RestaurantStatusUpdate,

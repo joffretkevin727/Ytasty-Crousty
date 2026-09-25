@@ -11,8 +11,8 @@ def get_restaurant_ids(db: Session):
     return repository.get_restaurant_ids(db)
 
 
-def create_products(db: Session, product_data: dict, restaurant_ids: list[int]):
-    return repository.create_products(db, product_data, restaurant_ids)
+def create_product(db: Session, product_data: dict):
+    return repository.create_product(db, product_data)
 
 
 def update_product(db: Session, product, product_data: dict):

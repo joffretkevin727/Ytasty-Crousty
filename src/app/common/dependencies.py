@@ -1,4 +1,3 @@
-# Fournit une session de base de données par requête
 from sqlalchemy.orm import Session
 from .database import SessionLocal
 from fastapi import Depends, HTTPException, status

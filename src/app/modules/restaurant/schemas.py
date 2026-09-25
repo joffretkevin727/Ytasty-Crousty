@@ -1,4 +1,3 @@
-"""Schema d'entrée et de sortie du module restaurant."""
 
 from pydantic import BaseModel
 

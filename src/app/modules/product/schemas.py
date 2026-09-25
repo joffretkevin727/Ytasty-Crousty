@@ -1,4 +1,3 @@
-"""Schema d'entrée et de sortie du module restaurant."""
 
 from pydantic import BaseModel
 
@@ -24,6 +23,7 @@ class ProductCreate(BaseModel):
     category: str
     price: float
     is_available: bool = True
+    restaurant_id: int
     ingredients: list[str] = []
 
 

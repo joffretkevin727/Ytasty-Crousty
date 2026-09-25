@@ -13,16 +13,12 @@ def get_restaurant_ids(db: Session):
     return [restaurant_id for (restaurant_id,) in db.query(Restaurant.id).all()]
 
 
-def create_products(db: Session, product_data: dict, restaurant_ids: list[int]):
-    products = [
-        Product(**product_data, restaurant_id=restaurant_id)
-        for restaurant_id in restaurant_ids
-    ]
-    db.add_all(products)
+def create_product(db: Session, product_data: dict):
+    product = Product(**product_data)
+    db.add(product)
     db.commit()
-    for product in products:
-        db.refresh(product)
-    return products
+    db.refresh(product)
+    return product
 
 
 def update_product(db: Session, product: Product, product_data: dict):

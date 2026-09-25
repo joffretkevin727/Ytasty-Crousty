@@ -13,7 +13,6 @@ def get_restaurants_by_id(db: Session, restaurant_id: int):
         .first()
     )
 
-""" route réservée aux admins"""
 
 def modify_restaurant(db: Session, restaurant_id: int, restaurant_data: dict):
     restaurant = (

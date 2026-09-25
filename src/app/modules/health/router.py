@@ -1,4 +1,3 @@
-"""Routes HTTP du module health."""
 
 from fastapi import APIRouter
 
@@ -10,5 +9,4 @@ router = APIRouter(tags=["health"])
 
 @router.get("/health", response_model=HealthResponse)
 def health() -> HealthResponse:
-    """Verifie que l'API repond."""
     return service.get_status()

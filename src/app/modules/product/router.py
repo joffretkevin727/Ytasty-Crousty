@@ -21,8 +21,6 @@ def get_products( category: str | None = None, restaurant_id: int | None = None,
         is_available=is_available,
         name_query=q,
     )
-    if not result:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No products found")
     return result
 
 
@@ -39,34 +37,29 @@ def get_product_by_id(product_id: int, db=Depends(get_db)):
 
 @product_router.post(
     "/products",
-    response_model=list[Product],
+    response_model=Product,
     status_code=status.HTTP_201_CREATED,
 )
-def create_products(
+def create_product(
     product_data: ProductCreate,
     db=Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    if current_user.role == "admin":
-        restaurant_ids = service.get_restaurant_ids(db)
-    elif current_user.role == "staff" and current_user.restaurant_id is not None:
-        restaurant_ids = [current_user.restaurant_id]
-    else:
+    if current_user.role == "staff":
+        if current_user.restaurant_id != product_data.restaurant_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Staff can only create products for their own restaurant",
+            )
+    elif current_user.role != "admin" and current_user.role != "direction":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Only admins and staff assigned to a restaurant can create products",
+            detail="Not authorized to create products",
         )
 
-    if not restaurant_ids:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No restaurant found",
-        )
-
-    return service.create_products(
+    return service.create_product(
         db,
         product_data.model_dump(),
-        restaurant_ids,
     )
 
 
@@ -81,7 +74,7 @@ def _check_product_access(product, current_user: User):
     )
 
 
-@product_router.put("/products/{product_id}", response_model=Product)
+@product_router.patch("/products/{product_id}", response_model=Product)
 def update_product(
     product_id: int,
     product_data: ProductUpdate,
@@ -103,7 +96,7 @@ def update_product(
     )
 
 
-@product_router.put("/products/{product_id}/availability", response_model=Product)
+@product_router.patch("/products/{product_id}/availability", response_model=Product)
 def update_product_status(
     product_id: int,
     status_data: ProductStatusUpdate,
