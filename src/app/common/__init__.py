@@ -1,1 +1,1 @@
-"""element partager par tout les modules metiers"""
+"""il reste vide, sa presence permet de le reconnaitre comme un package"""
